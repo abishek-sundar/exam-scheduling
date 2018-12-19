@@ -1,14 +1,14 @@
 from csv import reader
 import numpy as np
 class csv_parser:
-    def __init__(self,input):
-        self.input = input
-        self.output = np.array([])
+    def __init__(self,_input):
+        self.input = _input
+        self.output = []
 
     def readFile(self):
-        with open(input) as parseCsv:
-            text = reader(parseCsv, delimeter = ',')
-            bool title = True
+        with open(self.input) as parseCsv:
+            text = reader(parseCsv, delimiter = ',')
+            title = True
             for row in text:
                 if title:
                     title = False

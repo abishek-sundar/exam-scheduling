@@ -3,12 +3,15 @@ import numpy as np
 class room_info(csv_parser):
     def __init__(self):
         csv_parser.__init__(self,"classes.txt")
-        classCount = 0
-        classArray = np.array([])
+        self.classCount = 0
+        self.classArray = []
 
     def storeClasses(self):
-        self.classArray = self.readFile()
-        self.classCount = self.classArray.size
+        roomMatrix = self.readFile()
+        for roomArray in roomMatrix:
+            for room in roomArray:
+                self.classArray.append(room)
+        self.classCount = len(self.classArray)
 
 
 

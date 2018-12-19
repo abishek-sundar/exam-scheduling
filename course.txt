@@ -1,2 +1,3 @@
+Course Number, Size, Exam Time in Minutes
 CSC343, 300, 120
 ECE345, 250, 120
