@@ -8,11 +8,12 @@ class course_info(csv_parser):
         self.courseMatrix = dict()
         self.cNameToId = dict()
         self.cIdToName = []
+        self.disjointCourses = []
         
     def populateCourses(self):
         coursesFile = self.readFile()
         self.courseCount = len(coursesFile)
-        count = 0;
+        count = 0
         for row in coursesFile:
             student = row[1].strip()
             course = row[0].strip()
@@ -26,7 +27,6 @@ class course_info(csv_parser):
             if student in self.students:
                 self.students[student].append(self.cNameToId[course])
                 self.populateCourseMatrix(self.cNameToId[course],student)
-
             else:
                 self.students[student] = [self.cNameToId[course]]
         self.setDisjointToZero()
@@ -56,4 +56,5 @@ class course_info(csv_parser):
                     continue
                 if newKey not in self.courseMatrix.keys():
                     self.courseMatrix[newKey] = 0
+                    self.disjointCourses.append(newKey)
 
