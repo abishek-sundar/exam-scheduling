@@ -7,7 +7,7 @@ class room_info(csv_parser):
         classArray = np.array([])
 
     def storeClasses(self):
-        self.classArray = csv_parser.readFile()
+        self.classArray = self.readFile()
         self.classCount = self.classArray.size
 
 
