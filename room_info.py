@@ -1,5 +1,4 @@
 from csv_parser import csv_parser
-import numpy as np
 class room_info(csv_parser):
     def __init__(self):
         csv_parser.__init__(self,"classes.txt")

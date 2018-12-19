@@ -1,5 +1,4 @@
 from csv import reader
-import numpy as np
 class csv_parser:
     def __init__(self,_input):
         self.input = _input
