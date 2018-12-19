@@ -9,6 +9,6 @@ class course_info(csv_parser):
         matrixCourses = self.readFile()
         self.courseCount = len(matrixCourses)
         for row in matrixCourses:
-            self.courses[row[0]] = (row[1], row[2])
+            self.courses[row[0]] = (int(row[1]), int(row[2]))
 
 
