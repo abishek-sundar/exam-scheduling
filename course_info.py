@@ -67,11 +67,14 @@ class course_info(csv_parser):
         for courses in disjointSet:
             inserted = False
             for disjointArray in self.disjointCourses:
+                if courses[0] in disjointArray and courses[1] in disjointArray:
+                    inserted = True
+                    break
                 if courses[1] in disjointArray:
                     self.checkOtherCourses(disjointArray,courses[0],disjointSet) 
                 if courses[0] in disjointArray:
                     self.checkOtherCourses(disjointArray,courses[1],disjointSet)
-                if courses[0] in disjointArray and courses[1] in disjointArray:
+                if (courses[0] in disjointArray and courses[1] in disjointArray):
                     inserted = True
             if not inserted:
                 self.disjointCourses.append([courses[0],courses[1]])             
