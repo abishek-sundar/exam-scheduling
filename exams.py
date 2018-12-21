@@ -4,5 +4,5 @@ from room_info import room_info
 courseInfo = course_info()
 roomInfo = room_info()
 
-courseInfo.populateCourses()
+courseInfo.parseCourses()
 roomInfo.storeClasses()
