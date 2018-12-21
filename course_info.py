@@ -37,7 +37,7 @@ class course_info(csv_parser):
     def populateCourseMatrix(self,newCourse,student):
         for oldCourse in self.students[student]:
             key, diff = self.courseCompare(oldCourse,newCourse)
-            if diff == False:
+            if not diff:
                 continue
             if key in self.courseMatrix.keys():
                 self.courseMatrix[key] = self.courseMatrix[key] + 1
@@ -50,7 +50,7 @@ class course_info(csv_parser):
         for course1 in ids:
             for course2 in ids:
                 newKey, diff = self.courseCompare(course1,course2)
-                if diff == False:
+                if not diff:
                     continue
                 if newKey not in self.courseMatrix.keys():
                     self.courseMatrix[newKey] = 0
@@ -76,7 +76,7 @@ class course_info(csv_parser):
     def checkOtherCourses(self, courseArray, checkCourse, mutuallyExclusive):
         for course in courseArray:
             key, diff = self.courseCompare(course,checkCourse)
-            if diff == False:
+            if not diff:
                 return True
             if key not in mutuallyExclusive:
                 return False
