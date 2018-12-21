@@ -36,27 +36,21 @@ class course_info(csv_parser):
 
     def populateCourseMatrix(self,newCourse,student):
         for oldCourse in self.students[student]:
-            if oldCourse < newCourse:
-                newKey = (oldCourse, newCourse)
-            elif newCourse < oldCourse:
-                newKey = (newCourse, oldCourse)
-            else:
+            key, diff = self.courseCompare(oldCourse,newCourse)
+            if diff == False:
                 continue
-            if newKey in self.courseMatrix.keys():
-                self.courseMatrix[newKey] = self.courseMatrix[newKey] + 1
+            if key in self.courseMatrix.keys():
+                self.courseMatrix[key] = self.courseMatrix[key] + 1
             else:
-                self.courseMatrix[newKey] = 1
+                self.courseMatrix[key] = 1
 
     def setDisjoint(self):
         ids = self.cNameToId.values()
         mutuallyExclusive = []
         for course1 in ids:
             for course2 in ids:
-                if course1 < course2:
-                    newKey = (course1,course2)
-                elif course2 < course1:
-                    newKey = (course2,course1)
-                else:
+                newKey, diff = self.courseCompare(course1,course2)
+                if diff == False:
                     continue
                 if newKey not in self.courseMatrix.keys():
                     self.courseMatrix[newKey] = 0
@@ -81,14 +75,19 @@ class course_info(csv_parser):
                     
     def checkOtherCourses(self, courseArray, checkCourse, mutuallyExclusive):
         for course in courseArray:
-            if course<checkCourse:
-                key = (course,checkCourse)
-            elif checkCourse < course:
-                key = (checkCourse,course)
-            else:
+            key, diff = self.courseCompare(course,checkCourse)
+            if diff == False:
                 return True
             if key not in mutuallyExclusive:
                 return False
         courseArray.append(checkCourse)
         return True
+
+    def courseCompare(self, course1, course2):
+        if course1<course2:
+            return (course1,course2), True
+        elif course2<course1:
+            return (course2,course1), True
+        else:
+            return (0,0), False
 
