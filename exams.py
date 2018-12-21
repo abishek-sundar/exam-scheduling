@@ -6,5 +6,3 @@ roomInfo = room_info()
 
 courseInfo.populateCourses()
 roomInfo.storeClasses()
-
-print (courseInfo.disjointCourses)
