@@ -3,14 +3,15 @@ class room_info(csv_parser):
     def __init__(self):
         csv_parser.__init__(self,"classes.txt")
         self.classCount = 0
-        self.classArray = []
+        self.roomDict = dict()
 
     def storeClasses(self):
         roomMatrix = self.readFile()
         for roomArray in roomMatrix:
-            for room in roomArray:
-                self.classArray.append(room)
-        self.classCount = len(self.classArray)
+            room = roomArray[0]
+            size = int(roomArray[1])
+            self.roomDict[room] = size   
+        self.classCount = len(self.roomDict)
 
 
 
