@@ -6,3 +6,5 @@ roomInfo = room_info()
 
 courseInfo.parseCourses()
 roomInfo.storeClasses()
+print(courseInfo.cNameToId)
+print(courseInfo.disjointCourses)
