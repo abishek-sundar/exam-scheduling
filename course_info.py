@@ -4,8 +4,8 @@ class course_info(csv_parser):
     def __init__(self):
         csv_parser.__init__(self,"course.txt") 
         self.courseCount = 0 #holds number of courses in total
-        self.courses = dict() #holds number of people taking a course
-        self.students = dict() #holds all the courses taken by a student
+        self.courseEnrollmentNum = dict() #holds number of people taking a course
+        self.studentsTook = dict() #holds all the courses taken by a student
         self.courseMatrix = dict() #holds a course x course matrix that holds the number of students taking both courses
         self.cNameToId = dict() #mapping of course name to ID
         self.cIdToName = [] #mapping of course ID to name
@@ -20,23 +20,23 @@ class course_info(csv_parser):
         for row in coursesFile:
             student = row[1].strip()
             course = row[0].strip()
-            if course in self.courses:
-                self.courses[course] = self.courses[course] + 1
+            if course in self.courseEnrollmentNum:
+                self.courseEnrollmentNum[course] = self.courseEnrollmentNum[course] + 1
             else:
-                self.courses[course] = 1
+                self.courseEnrollmentNum[course] = 1
                 self.cNameToId[course] = count
                 count = count + 1
                 self.cIdToName.append(course)
-            if student in self.students:
-                self.students[student].append(self.cNameToId[course])
-                self.populateCourseMatrix(self.cNameToId[course],student)
+            if student in self.studentsTook:
+                self.studentsTook[student].append(self.cNameToId[course])
+                self.__populateCourseMatrix(self.cNameToId[course],student)
             else:
-                self.students[student] = [self.cNameToId[course]]
-        self.setDisjoint()
+                self.studentsTook[student] = [self.cNameToId[course]]
+        self.__setDisjoint()
 
-    def populateCourseMatrix(self,newCourse,student):
-        for oldCourse in self.students[student]:
-            key, diff = self.courseCompare(oldCourse,newCourse)
+    def __populateCourseMatrix(self,newCourse,student):
+        for oldCourse in self.studentsTook[student]:
+            key, diff = self.__courseCompare(oldCourse,newCourse)
             if not diff:
                 continue
             if key in self.courseMatrix.keys():
@@ -44,20 +44,20 @@ class course_info(csv_parser):
             else:
                 self.courseMatrix[key] = 1
 
-    def setDisjoint(self):
+    def __setDisjoint(self):
         ids = self.cNameToId.values()
         mutuallyExclusive = []
         for course1 in ids:
             for course2 in ids:
-                newKey, diff = self.courseCompare(course1,course2)
+                newKey, diff = self.__courseCompare(course1,course2)
                 if not diff:
                     continue
                 if newKey not in self.courseMatrix.keys():
                     self.courseMatrix[newKey] = 0
                     mutuallyExclusive.append(newKey)
-        self.disjointClosure(mutuallyExclusive)
+        self.__disjointClosure(mutuallyExclusive)
     
-    def disjointClosure(self, disjointSet):
+    def __disjointClosure(self, disjointSet):
         for courses in disjointSet:
             inserted = False
             for disjointArray in self.disjointCourses:
@@ -65,17 +65,17 @@ class course_info(csv_parser):
                     inserted = True
                     break
                 if courses[1] in disjointArray:
-                    self.checkOtherCourses(disjointArray,courses[0],disjointSet) 
+                    self.__checkOtherCourses(disjointArray,courses[0],disjointSet) 
                 if courses[0] in disjointArray:
-                    self.checkOtherCourses(disjointArray,courses[1],disjointSet)
+                    self.__checkOtherCourses(disjointArray,courses[1],disjointSet)
                 if (courses[0] in disjointArray and courses[1] in disjointArray):
                     inserted = True
             if not inserted:
                 self.disjointCourses.append([courses[0],courses[1]])             
                     
-    def checkOtherCourses(self, courseArray, checkCourse, mutuallyExclusive):
+    def __checkOtherCourses(self, courseArray, checkCourse, mutuallyExclusive):
         for course in courseArray:
-            key, diff = self.courseCompare(course,checkCourse)
+            key, diff = self.__courseCompare(course,checkCourse)
             if not diff:
                 return True
             if key not in mutuallyExclusive:
@@ -83,7 +83,7 @@ class course_info(csv_parser):
         courseArray.append(checkCourse)
         return True
 
-    def courseCompare(self, course1, course2):
+    def __courseCompare(self, course1, course2):
         if course1<course2:
             return (course1,course2), True
         elif course2<course1:
