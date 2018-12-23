@@ -1,8 +1,6 @@
-from course_info import course_info
-from room_info import room_info
+from allocRoom import allocRoom
 
-courseInfo = course_info()
-roomInfo = room_info()
-
-courseInfo.parseCourses()
-roomInfo.storeClasses()
+def main():
+    x = allocRoom()
+if __name__ == "__main__":
+    main()

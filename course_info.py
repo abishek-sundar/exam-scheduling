@@ -2,7 +2,7 @@ from csv_parser import csv_parser
 class course_info(csv_parser):
     
     def __init__(self):
-        csv_parser.__init__(self,"course.txt") 
+        csv_parser.__init__(self) 
         self.courseCount = 0 #holds number of courses in total
         self.courseEnrollmentNum = dict() #holds number of people taking a course
         self.studentsTook = dict() #holds all the courses taken by a student
@@ -14,20 +14,20 @@ class course_info(csv_parser):
 
     # @brief: populates courses dict, cNameToId, cIdToName, and courseMatrix.
     def parseCourses(self):
-        coursesFile = self.readFile()
+        coursesFile = self.readFile("course.txt")
         self.courseCount = len(coursesFile)
         count = 0
         for row in coursesFile:
             student = row[1].strip()
             course = row[0].strip()
-            if course in self.courseEnrollmentNum:
+            if course in self.courseEnrollmentNum.keys():
                 self.courseEnrollmentNum[course] = self.courseEnrollmentNum[course] + 1
             else:
                 self.courseEnrollmentNum[course] = 1
                 self.cNameToId[course] = count
-                count = count + 1
                 self.cIdToName.append(course)
-            if student in self.studentsTook:
+                count = count + 1
+            if student in self.studentsTook.keys():
                 self.studentsTook[student].append(self.cNameToId[course])
                 self.__populateCourseMatrix(self.cNameToId[course],student)
             else:
@@ -68,7 +68,7 @@ class course_info(csv_parser):
                     self.__checkOtherCourses(disjointArray,courses[0],disjointSet) 
                 if courses[0] in disjointArray:
                     self.__checkOtherCourses(disjointArray,courses[1],disjointSet)
-                if (courses[0] in disjointArray and courses[1] in disjointArray):
+                if courses[0] in disjointArray and courses[1] in disjointArray:
                     inserted = True
             if not inserted:
                 self.disjointCourses.append([courses[0],courses[1]])             
